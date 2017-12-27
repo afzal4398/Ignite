@@ -80,6 +80,7 @@
             this.btnUpdate.TabIndex = 6;
             this.btnUpdate.Text = "Set Dynamic Class data in cache";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Visible = false;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // txtMsg
@@ -128,6 +129,7 @@
             this.button4.TabIndex = 11;
             this.button4.Text = "Get Dynamic class data from cache";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5

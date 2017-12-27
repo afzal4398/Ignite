@@ -15,11 +15,14 @@ using Apache.Ignite.Core.Cache;
 using Apache.Ignite.Core.Cache.Configuration;
 using Newtonsoft.Json;
 using Apache.Ignite.Core.Cache.Query;
-
+using Newtonsoft.Json.Converters;
+using IgniteTest.Library;
 namespace IgniteTest
 {
     public partial class Form1 : Form
     {
+        public static string configURL = @"D:\GitRepository\Ignite\IgniteTest\IgniteTest\ignite-config.xml";
+
         public Form1()
         {
             InitializeComponent();
@@ -69,7 +72,7 @@ namespace IgniteTest
 
                 var cfg = new IgniteConfiguration
                 {
-                    SpringConfigUrl = @"D:\GitRepository\IgniteTest\IgniteTest\ignite-config.xml",
+                    SpringConfigUrl = configURL,
                     BinaryConfiguration = new BinaryConfiguration(typeof(Person), typeof(PersonFilter))
                 };
                 Ignition.ClientMode = true;
@@ -115,7 +118,7 @@ namespace IgniteTest
 
                 var cfg = new IgniteConfiguration
                 {
-                    SpringConfigUrl = @"D:\GitRepository\IgniteTest\IgniteTest\ignite-config.xml",
+                    SpringConfigUrl = configURL,
                     BinaryConfiguration = new BinaryConfiguration(typeof(Person),typeof(PersonFilter))
                 };
                 Ignition.ClientMode = true;
@@ -155,27 +158,43 @@ namespace IgniteTest
             try
             {
                 List<Person> lstData = GeneratePersonData(5);
+
+                //List<String> lstAssemblies = new List<string>();
+                //lstAssemblies.Add(@"D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\bin\Debug\IgniteTest.Library.dll");
+
                 var ccfg = new CacheConfiguration
                 {
-                    Name = "SCAN_DATA"
-                    //CacheMode = CacheMode.Replicated
+                    Name = "SCAN_DATA",
+                    CacheMode= CacheMode.Replicated
                 };
 
                 var cfg = new IgniteConfiguration
                 {
-                    SpringConfigUrl = @"D:\GitRepository\IgniteTest\IgniteTest\ignite-config.xml",
-                    BinaryConfiguration = new BinaryConfiguration(typeof(Person), typeof(PersonFilter))
+                    SpringConfigUrl = configURL,
+                    BinaryConfiguration = new BinaryConfiguration(typeof(Person), typeof(PersonFilter)),
+                    ClientMode=true
+                    
+                    //Assemblies = lstAssemblies,
+                    //PeerAssemblyLoadingMode = Apache.Ignite.Core.Deployment.PeerAssemblyLoadingMode.CurrentAppDomain
                 };
-                Ignition.ClientMode = true;
                 using (var ignite = Ignition.Start(cfg))
                 {
                     ICache<int, Person> persons = ignite.GetOrCreateCache<int, Person>(ccfg);
 
                     int i = 1;
                     foreach (Person p in lstData)
-
                     {
                         persons.Put(i++, p);
+                    }
+
+                    var scanQuery = new ScanQuery<int, Person>(new PersonFilter(30));
+                    IQueryCursor<ICacheEntry<int, Person>> queryCursor = persons.Query(scanQuery);
+
+                    //below line throwing error
+                    foreach (ICacheEntry<int, Person> p in queryCursor)
+                    {
+                        int j = 0;
+                        //lstData.Add(new Person());
                     }
                 }
 
@@ -190,21 +209,27 @@ namespace IgniteTest
         //load from cache
         private void button6_Click(object sender, EventArgs e)
         {
-
             try
             {
+                //ICollection<string> strCollection =new 
+                //strCollection.Add(@"D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\bin\Debug\IgniteTest.Library.dll");
+                List<String> lstAssemblies = new List<string>();
+                lstAssemblies.Add(@"D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\bin\Debug\IgniteTest.Library.dll");
+
                 List<Person> lstData = new List<Person>();
                 var ccfg = new CacheConfiguration
                 {
-                    Name = "SCAN_DATA"
-                    //CacheMode = CacheMode.Replicated
+                    Name = "SCAN_DATA",
+                    CacheMode = CacheMode.Replicated
                 };
 
                 var cfg = new IgniteConfiguration
                 {
-                    SpringConfigUrl = @"D:\GitRepository\IgniteTest\IgniteTest\ignite-config.xml",
+                    SpringConfigUrl = configURL,
                     BinaryConfiguration = new BinaryConfiguration(typeof(Person), typeof(PersonFilter)),
                     ClientMode = true
+                    //Assemblies = lstAssemblies,
+                    //PeerAssemblyLoadingMode = Apache.Ignite.Core.Deployment.PeerAssemblyLoadingMode.CurrentAppDomain
                 };
                 using (var ignite = Ignition.Start(cfg))
                 {
@@ -213,12 +238,18 @@ namespace IgniteTest
                     //getting single record-- working
                     lstData.Add(persons.Get(1));
 
+                    //all record coming - working
+                    List<ICacheEntry<int, Person>> lst = persons.ToList<ICacheEntry<int, Person>>();
 
+                    //filter records
                     //query with filter condition-- not working and i think i am missing something
                     var scanQuery = new ScanQuery<int, Person>(new PersonFilter(30));
+                    
+                    ///In line 513, on debug, showing exception "((Apache.Ignite.Core.Impl.Cache.Query.QueryCursorBase<Apache.Ignite.Core.Cache.ICacheEntry<int, IgniteTest.Library.Person>>)queryCursor).Current threw an exception of type System.InvalidOperationException"
+                    ///but not throwing exception 
                     IQueryCursor<ICacheEntry<int, Person>> queryCursor = persons.Query(scanQuery);
 
-                    //below line throwing error.. need to check if there is any configuration is needed during insert or in server config
+                    //below line throwing error.. 
                     foreach (ICacheEntry<int, Person> p in queryCursor)
                     {
                         int j = 0;
@@ -328,12 +359,27 @@ namespace IgniteTest
             for (int i = 1; i <=3; i++)
             {
                 AddProperty(dataObj, "prop_" + i.ToString(), string.Empty);
+                
             }
 
             //add data to object
             List<Person> persons = GetPersonList();
             //assign values of person class to dynamic object
-            
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("UserId", typeof(Int32));
+            dt.Columns.Add("UserName", typeof(string));
+            dt.Columns.Add("Education", typeof(string));
+            dt.Columns.Add("Location", typeof(string));
+            dt.Rows.Add(1, "Satinder Singh", "Bsc Com Sci", "Mumbai");
+            dt.Rows.Add(2, "Amit Sarna", "Mstr Com Sci", "Mumbai");
+            dt.Rows.Add(3, "Andrea Ely", "Bsc Bio-Chemistry", "Queensland");
+            dt.Rows.Add(4, "Leslie Mac", "MSC", "Town-ville");
+            dt.Rows.Add(5, "Vaibhav Adhyapak", "MBA", "New Delhi");
+
+            string JSONString = string.Empty;
+            JSONString = JsonConvert.SerializeObject(dt);
+            //return JSONString;
 
             return dataList;
         }
@@ -419,22 +465,17 @@ namespace IgniteTest
             try
             {
                 List<Person> lstData = GeneratePersonData(5);
-                var ccfg = new CacheConfiguration
-                {
-                    Name = "SQL_DATA",
-                    CacheMode = CacheMode.Replicated
-                };
-
                 var cfg = new IgniteConfiguration
                 {
-                    SpringConfigUrl = @"D:\GitRepository\IgniteTest\IgniteTest\ignite-config.xml",
+                    SpringConfigUrl = configURL,
                     BinaryConfiguration = new BinaryConfiguration(typeof(Person), typeof(PersonFilter)),
                     ClientMode=true
+                    //PeerAssemblyLoadingMode = Apache.Ignite.Core.Deployment.PeerAssemblyLoadingMode.CurrentAppDomain
            
                 };
                 using (var ignite = Ignition.Start(cfg))
                 {
-                    ICache<int, Person> persons = ignite.GetOrCreateCache<int, Person>(ccfg);
+                    ICache<int, Person> persons = ignite.GetOrCreateCache<int, Person>(new CacheConfiguration("SQL_DATA", typeof(Person)));
 
                     int i = 1;
                     foreach (Person p in lstData)
@@ -455,74 +496,51 @@ namespace IgniteTest
         {
             try
             {
-                List<Person> lstData = GeneratePersonData(5);
-                var ccfg = new CacheConfiguration
-                {
-                    Name = "SQL_DATA",
-                    CacheMode = CacheMode.Replicated
-                };
-                
                 var cfg = new IgniteConfiguration
                 {
-                    SpringConfigUrl = @"D:\GitRepository\IgniteTest\IgniteTest\ignite-config.xml",
+                    SpringConfigUrl = configURL,
                     BinaryConfiguration = new BinaryConfiguration(typeof(Person), typeof(PersonFilter)),
                     ClientMode = true
-                    
+                    //PeerAssemblyLoadingMode = Apache.Ignite.Core.Deployment.PeerAssemblyLoadingMode.CurrentAppDomain
                 };
                 using (var ignite = Ignition.Start(cfg))
                 {
-                    //ICache<int, Person> personCache = ignite.GetOrCreateCache<int, Person>(ccfg);
-
                     ICache<int, Person> personCache = ignite.GetOrCreateCache<int, Person>(new CacheConfiguration("SQL_DATA", typeof(Person)));
 
-                    var sqlQuery = new SqlQuery(typeof(Person), "where age > ?", 30);
+                    //all record - working
+                    List<ICacheEntry<int, Person>> lst1 = personCache.ToList<ICacheEntry<int, Person>>();
+
+
+                    ///SQL query
+                    var sqlQuery = new SqlQuery(typeof(Person), "where age >= ?", 30);
+
+                    ///In line 513, on debug, showing exception "((Apache.Ignite.Core.Impl.Cache.Query.QueryCursorBase<Apache.Ignite.Core.Cache.ICacheEntry<int, IgniteTest.Library.Person>>)queryCursor).Current threw an exception of type System.InvalidOperationException"
+                    ///but not throwing exception 
                     IQueryCursor<ICacheEntry<int, Person>> queryCursor = personCache.Query(sqlQuery);
-                    //var queryCursor = personCache.Query(sqlQuery);
 
+                    foreach (ICacheEntry<int, Person> p in queryCursor)
+                    {
+                        int j = 0;
+                    }
 
+                    //LINQ- data not filtered
+                    IQueryable<ICacheEntry<int, Person>> persons = personCache.AsCacheQueryable();
 
+                    IQueryable<ICacheEntry<int, Person>> qry = persons.Where(d => d.Value.Age > 30);
 
-                    //lstData = null;
-                    //foreach (ICacheEntry<int, Person> p in queryCursor)
-                    //{
-                    //    int j = 0;
-                    //    //lstData.Add(new Person());
-                    //}
-
+                    List<ICacheEntry<int, Person>> lst2 = qry.ToList<ICacheEntry<int, Person>>();
+                    var pers = qry.ToArray();
 
                     int i = 0;
                 }
             }
             catch (Exception ex)
             {
-                txtMsg.Text = ex.Message;
+                txtMsg.Text = ex.ToString();
             }
         }
         #endregion  
     }
 
-    public class Person
-    {
-        [QuerySqlField (IsIndexed =true)]
-        public int Id { get; set; }
-        [QuerySqlField]
-        public string Name { get; set; }
-        [QuerySqlField]
-        public string Designation { get; set; }
-        [QuerySqlField]
-        public int Salary { get; set; }
-        [QuerySqlField]
-        public int Age { get; set; }
-
-    }
-    public class PersonFilter : ICacheEntryFilter<int, Person>
-    {
-        public int _Age { get; set; }
-        public PersonFilter(int age) { _Age = age; }
-
-        public bool Invoke(ICacheEntry<int, Person> entry)
-        {
-            return entry.Value.Age >= _Age;
-        }
-    }
+    
 }

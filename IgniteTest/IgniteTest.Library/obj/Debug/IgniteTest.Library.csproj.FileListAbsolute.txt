@@ -1,0 +1,8 @@
+D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\bin\Debug\IgniteTest.Library.dll
+D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\bin\Debug\IgniteTest.Library.pdb
+D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\bin\Debug\Apache.Ignite.Core.dll
+D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\bin\Debug\Apache.Ignite.exe
+D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\bin\Debug\Apache.Ignite.Core.xml
+D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\obj\Debug\IgniteTest.Library.dll
+D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\obj\Debug\IgniteTest.Library.pdb
+D:\GitRepository\Ignite\IgniteTest\IgniteTest.Library\obj\Debug\IgniteTest.Library.csprojResolveAssemblyReference.cache

@@ -35,7 +35,7 @@
         </property>
       </bean>
     </property>
-    
+
     <!-- Explicitly configure TCP discovery SPI to provide list of initial nodes. -->
     <property name="discoverySpi">
       <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
@@ -54,7 +54,7 @@
                 <value>10.142.128.210</value>
                 <value>10.142.128.209</value>
                 <value>10.142.128.70</value>
-
+                <!--<string>127.0.0.1</string>-->
               </list>
             </property>
           </bean>

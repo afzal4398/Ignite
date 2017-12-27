@@ -138,6 +138,12 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IgniteTest.Library\IgniteTest.Library.csproj">
+      <Project>{1e672864-0554-4a2e-af87-0ea53b84905e}</Project>
+      <Name>IgniteTest.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
