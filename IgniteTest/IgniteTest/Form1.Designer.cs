@@ -31,17 +31,21 @@
             this.btnInsert = new System.Windows.Forms.Button();
             this.dgCacheData = new System.Windows.Forms.DataGridView();
             this.btnStart = new System.Windows.Forms.Button();
-            this.btnUpdate = new System.Windows.Forms.Button();
             this.txtMsg = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
+            this.txtAge = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dgFilter = new System.Windows.Forms.DataGridView();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgCacheData)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgFilter)).BeginInit();
             this.SuspendLayout();
             // 
             // btnInsert
@@ -57,31 +61,20 @@
             // dgCacheData
             // 
             this.dgCacheData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgCacheData.Location = new System.Drawing.Point(12, 245);
+            this.dgCacheData.Location = new System.Drawing.Point(11, 247);
             this.dgCacheData.Name = "dgCacheData";
-            this.dgCacheData.Size = new System.Drawing.Size(579, 182);
+            this.dgCacheData.Size = new System.Drawing.Size(579, 90);
             this.dgCacheData.TabIndex = 3;
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(11, 13);
+            this.btnStart.Location = new System.Drawing.Point(11, 11);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(161, 23);
             this.btnStart.TabIndex = 4;
             this.btnStart.Text = "Test Ignite Client Connection";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.Location = new System.Drawing.Point(11, 210);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(272, 23);
-            this.btnUpdate.TabIndex = 6;
-            this.btnUpdate.Text = "Set Dynamic Class data in cache";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Visible = false;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // txtMsg
             // 
@@ -120,17 +113,6 @@
             this.button3.Text = "Get Binary data from cache";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(298, 209);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(292, 23);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "Get Dynamic class data from cache";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Visible = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
@@ -172,27 +154,74 @@
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
+            // txtAge
+            // 
+            this.txtAge.Location = new System.Drawing.Point(490, 14);
+            this.txtAge.Name = "txtAge";
+            this.txtAge.Size = new System.Drawing.Size(100, 20);
+            this.txtAge.TabIndex = 16;
+            this.txtAge.Text = "35";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(418, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(66, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Filter By Age";
+            // 
+            // dgFilter
+            // 
+            this.dgFilter.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgFilter.Location = new System.Drawing.Point(11, 384);
+            this.dgFilter.Name = "dgFilter";
+            this.dgFilter.Size = new System.Drawing.Size(577, 93);
+            this.dgFilter.TabIndex = 18;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 228);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "All Data";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 365);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(67, 13);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Filtered Data";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(603, 455);
+            this.ClientSize = new System.Drawing.Size(603, 489);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.dgFilter);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtAge);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtMsg);
-            this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.dgCacheData);
             this.Controls.Add(this.btnInsert);
             this.Name = "Form1";
             this.Text = "Ingite Test";
             ((System.ComponentModel.ISupportInitialize)(this.dgCacheData)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgFilter)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,16 +232,19 @@
         private System.Windows.Forms.Button btnInsert;
         private System.Windows.Forms.DataGridView dgCacheData;
         private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.TextBox txtMsg;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.TextBox txtAge;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView dgFilter;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 
